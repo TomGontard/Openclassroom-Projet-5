@@ -21,3 +21,38 @@ async function getProductDetails() {
         console.error('Erreur lors de la récupération des produits :', error);
   }
 }
+
+async function displayProductDetails() {
+    //Récupération des informations du produit
+    const productDetails = await getProductDetails();
+
+    //Création des variables pour chacune des informations
+    const imageElement = document.createElement('img');
+    const titleElement = document.getElementById('title');
+    const priceElement = document.getElementById('price');
+    const descriptionElement = document.getElementById('description');
+    const colorsSelectElement = document.getElementById('colors');
+
+    //Rattachage des informations aux variables
+    imageElement.src = productDetails.imageUrl;
+    imageElement.alt = productDetails.altTxt;
+    titleElement.textContent = productDetails.name;
+    priceElement.textContent = productDetails.price;
+    descriptionElement.textContent = productDetails.description;
+    colorsSelectElement.textContent = productDetails.colors;
+
+    // Insertion de l'image dans la div prévue à cet effet avec la classe "item__img"
+    const itemImgDiv = document.querySelector('.item__img');
+    itemImgDiv.appendChild(imageElement);
+
+    //Création des options pour chacune des couleurs des produits
+    productDetails.colors.forEach((color) => {
+        const optionElement = document.createElement('option');
+        optionElement.value = color;
+        optionElement.textContent = color;
+        colorsSelectElement.appendChild(optionElement);
+    });
+}
+
+//Lancement de la fonction une fois que la page est chargée
+document.addEventListener('DOMContentLoaded', displayProductDetails);
