@@ -1,3 +1,12 @@
+async function listenForBasketChange() {
+    // Récupération du panier
+    cart = JSON.parse(localStorage.getItem('cart'));
+    
+    // Mise sous écoute des quantités et suppressions des articles
+    const quantityInputs = document.querySelectorAll('.itemQuantity');
+    const deleteButtons = document.querySelectorAll('.cart__item__content__settings__delete');
+}
+
 // Affichage des articles ajoutés au panier
 async function displayArticles() {
     // Récupération du panier
