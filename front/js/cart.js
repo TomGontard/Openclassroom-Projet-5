@@ -1,3 +1,43 @@
+async function listenForBasketChange() {
+    // Récupération du panier
+    cart = JSON.parse(localStorage.getItem('cart'));
+    
+    // Mise sous écoute des quantités et suppressions des articles
+    const quantityInputs = document.querySelectorAll('.itemQuantity');
+    const deleteButtons = document.querySelectorAll('.cart__item__content__settings__delete');
+
+    
+    quantityInputs.forEach((input) => {
+        // Actualisation lors de la mise à jour des quantités
+        input.addEventListener('change', (event) => {
+            const quantity = parseInt(event.target.value);
+            const article = event.target.closest('.cart__item');
+            const id = article.dataset.id;
+            const color = article.dataset.color;
+
+            const itemIndex = cart.findIndex((item) => item.id === id && item.color === color);
+            if (itemIndex !== -1) {
+                cart[itemIndex].quantity = quantity;
+                localStorage.setItem('cart', JSON.stringify(cart));;
+                displayArticles();
+            }
+        });
+    });
+
+    deleteButtons.forEach((button) => {
+        // Actualisation lors de la suppression des produits du panier
+        button.addEventListener('click', (event) => {
+            const article = event.target.closest('.cart__item');
+            const id = article.dataset.id;
+            const color = article.dataset.color;
+
+            cart = cart.filter((item) => !(item.id === id && item.color === color));
+            localStorage.setItem('cart', JSON.stringify(cart));;
+            displayArticles();
+        });
+    });
+}
+
 // Affichage des articles ajoutés au panier
 async function displayArticles() {
     // Récupération du panier
@@ -90,6 +130,8 @@ async function displayArticles() {
             cartSection.appendChild(article);
         });
     };
+
+    listenForBasketChange();
 }
 
 // Lancement de la fonction une fois que la page est chargée
