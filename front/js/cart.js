@@ -38,6 +38,32 @@ async function listenForBasketChange() {
     });
 }
 
+// Actualisation du prix du panier
+async function updatePrice(products) {
+    // Récupération du panier
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    let totalQuantity = 0;
+    let totalPrice = 0;
+
+    if (!cart || cart.length === 0) {
+        return;
+    } else {
+        cart.forEach((item) => {
+            
+            const product = products.find((p) => p._id === item.id);
+
+            totalQuantity += item.quantity;
+            totalPrice += product.price * item.quantity;
+        });
+    }
+
+    const spanTotalQuantity = document.querySelector('#totalQuantity');
+    spanTotalQuantity.innerHTML = totalQuantity;
+
+    const spanTotalPrice = document.querySelector('#totalPrice');
+    spanTotalPrice.innerHTML = totalPrice;
+}
+
 // Affichage des articles ajoutés au panier
 async function displayArticles() {
     // Récupération du panier
@@ -128,6 +154,8 @@ async function displayArticles() {
             article.appendChild(contenuDiv);
             
             cartSection.appendChild(article);
+
+            updatePrice(products);
         });
     };
 
