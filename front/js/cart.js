@@ -23,6 +23,19 @@ async function listenForBasketChange() {
             }
         });
     });
+
+    deleteButtons.forEach((button) => {
+        // Actualisation lors de la suppression des produits du panier
+        button.addEventListener('click', (event) => {
+            const article = event.target.closest('.cart__item');
+            const id = article.dataset.id;
+            const color = article.dataset.color;
+
+            cart = cart.filter((item) => !(item.id === id && item.color === color));
+            localStorage.setItem('cart', JSON.stringify(cart));;
+            displayArticles();
+        });
+    });
 }
 
 // Affichage des articles ajoutés au panier
