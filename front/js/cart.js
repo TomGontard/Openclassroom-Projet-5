@@ -205,8 +205,10 @@ async function savePurchase(event) {
     });
 
     const responseData = await response.json();
-    
-    console.log(responseData);
+
+    // Redirection de l'utilisateur vers la page de confirmation 
+    // avec l'identifiant de commande dans l'URL
+    window.location.href = `confirmation.html?id=${responseData.orderId}`;
 }
 
 // Lancement de la fonction une fois que la page est chargée
