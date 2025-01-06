@@ -161,6 +161,48 @@ async function displayArticles() {
 
     listenForBasketChange();
 }
+async function savePurchase(event) {
+    // On empêche la page de se recharger
+    event.preventDefault();
+    
+    // Récupération de toutes les informations des produits
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    const cartSection = document.querySelector('#cart__items');
+    
+    const firstNameInput = document.getElementById('firstName').value;
+    const lastNameInput = document.getElementById('lastName').value;
+    const addressInput = document.getElementById('address').value;
+    const cityInput = document.getElementById('city').value;
+    const emailInput = document.getElementById('email').value;
+    
+    // Vérification de l'adresse email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput)) {
+        displayErrorMessage('emailErrorMsg', 'Veuillez saisir une adresse e-mail valide.');
+        return;
+    }
+
+    // Création d'un objet contenant les données de l'achat 
+    const orderData = {
+        contact: {
+            firstName: firstNameInput,
+            lastName: lastNameInput,
+            address: addressInput,
+            city: cityInput,
+            email: emailInput,
+        },
+        products: [],
+    };
+
+    // Ajout des détails des produits (quantité.s et couleur.s)
+    orderData.products = cart.map((item) => item.id);
+    
+    console.log(orderData);
+}
 
 // Lancement de la fonction une fois que la page est chargée
 document.addEventListener('DOMContentLoaded', displayArticles);
+
+// Mise sous écoute du formulaire
+const form = document.querySelector('.cart__order__form');
+form.addEventListener('submit', savePurchase);
