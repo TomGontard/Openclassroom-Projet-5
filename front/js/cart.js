@@ -196,8 +196,17 @@ async function savePurchase(event) {
 
     // Ajout des détails des produits (quantité.s et couleur.s)
     orderData.products = cart.map((item) => item.id);
+
+    // Récupération de la réponse de l'API
+    const response = await fetch(`http://localhost:3000/api/products/order`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json',},
+            body: JSON.stringify(orderData),
+    });
+
+    const responseData = await response.json();
     
-    console.log(orderData);
+    console.log(responseData);
 }
 
 // Lancement de la fonction une fois que la page est chargée
